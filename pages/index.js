@@ -1,5 +1,4 @@
 //somedomain.com/
-import { useEffect, useState } from "react";
 import MeetupList from "../components/meetups/MeetupList";
 const DUMMY_MEETUPS = [
   {
@@ -19,15 +18,30 @@ const DUMMY_MEETUPS = [
     description: "movie Very good ",
   },
 ];
-function MainPage() {
-  const [meetups, setMeetups] = useState([])
-  useEffect(()=>{
-    setMeetups(DUMMY_MEETUPS)
-  },[])
+function MainPage(props) {
+  // // const [meetups, setMeetups] = useState([]);
+  // useEffect(() => {
+  //   setMeetups(DUMMY_MEETUPS);
+  // }, []); 
+
+  //Alternative is below
   return (
     <>
-      <MeetupList meetups={meetups} />
+      <MeetupList meetups={props.meetups} />
     </>
   );
 }
+
+// getStaticProps is a reserved functions
+export function getStaticProps() {
+  //this will never end up on the client side. Executed during the build process and not on the client
+  //fetching data
+  //always return object. props property needs to be sent
+  return {
+    props: {
+      meetups: DUMMY_MEETUPS,
+    },
+  };
+}
+
 export default MainPage;
