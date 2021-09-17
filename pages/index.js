@@ -22,7 +22,7 @@ function MainPage(props) {
   // // const [meetups, setMeetups] = useState([]);
   // useEffect(() => {
   //   setMeetups(DUMMY_MEETUPS);
-  // }, []); 
+  // }, []);
 
   //Alternative is below
   return (
@@ -41,6 +41,7 @@ export function getStaticProps() {
     props: {
       meetups: DUMMY_MEETUPS,
     },
+    revalidate: 10, //for incremental static generation. next js waiting for ex 10 secs before handling the next req. will be generated on the server.ensures data is updated every 10 secs
   };
 }
 
