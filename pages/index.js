@@ -34,9 +34,9 @@ function MainPage(props) {
 
 // getStaticProps is a reserved functions
 export function getStaticProps() {
-  //this will never end up on the client side. Executed during the build process and not on the client
-  //fetching data
-  //always return object. props property needs to be sent
+// this will never end up on the client side. Executed during the build process and not on the client
+// fetching data
+// always return object. props property needs to be sent
   return {
     props: {
       meetups: DUMMY_MEETUPS,
@@ -44,5 +44,19 @@ export function getStaticProps() {
     revalidate: 10, //for incremental static generation. next js waiting for ex 10 secs before handling the next req. will be generated on the server.ensures data is updated every 10 secs
   };
 }
+
+//alternate to the above
+// export async function getServerSideProps(context) {
+  //generates on server side upon deployment. runs for every req to the server
+  //fetch data
+//   const req = context.req;
+//   const res = context.res; //similar to (req,res) in Node
+
+//   return {
+//     props: { meetups: DUMMY_MEETUPS },
+//   };
+// }
+
+//Disadvantage of GSSP - Wait for server for every incoming req.  faster for getStaticProps. Using GSSP only if you need access to req object or if data changes say for every 1 sec
 
 export default MainPage;
