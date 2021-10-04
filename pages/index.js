@@ -1,5 +1,6 @@
 //somedomain.com/
 import MeetupList from "../components/meetups/MeetupList";
+import { MongoClient } from "mongodb";
 const DUMMY_MEETUPS = [
   {
     id: "1a",
@@ -33,13 +34,24 @@ function MainPage(props) {
 }
 
 // getStaticProps is a reserved functions
-export function getStaticProps() {
-// this will never end up on the client side. Executed during the build process and not on the client
-// fetching data
-// always return object. props property needs to be sent
+export async function getStaticProps() {
+  // this will never end up on the client side. Executed during the build process and not on the client
+  // fetching data
+  // always return object. props property needs to be sent
+  const client = await MongoClient.connect(process.env.MONGO_URI);
+  const db = client.db();
+  const meetupsCollection = db.collection("meetups");
+
+  const meetups = await meetupsCollection.find().toArray();
+  client.close()
   return {
     props: {
-      meetups: DUMMY_MEETUPS,
+      meetups: meetups.map(meetup => ({
+        title: meetup.title,
+        address: meetup.address,
+        image: meetup.image, 
+        id: meetup._id.toString()
+      })),
     },
     revalidate: 10, //for incremental static generation. next js waiting for ex 10 secs before handling the next req. will be generated on the server.ensures data is updated every 10 secs
   };
@@ -47,8 +59,8 @@ export function getStaticProps() {
 
 //alternate to the above
 // export async function getServerSideProps(context) {
-  //generates on server side upon deployment. runs for every req to the server
-  //fetch data
+//generates on server side upon deployment. runs for every req to the server
+//fetch data
 //   const req = context.req;
 //   const res = context.res; //similar to (req,res) in Node
 
