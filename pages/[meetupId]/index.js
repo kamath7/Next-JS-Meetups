@@ -31,7 +31,7 @@ export async function getStaticPaths() {
   const meetups = await meetupsCollection.find({}, { _id: 1 }).toArray(); //only include id. filter options from mongo
   client.close();
   return {
-    fallback: false, //to indicate all paths are defined
+    fallback: 'blocking', //to indicate all paths are defined
     paths: meetups.map((meetup) => ({
       params: { meetupId: meetup._id.toString() },
     })),
