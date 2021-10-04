@@ -15,10 +15,30 @@ function MeetUpIdPage() {
     />
   );
 }
+
+//returning object where all dynamic segment values are defined
+export async function getStaticPaths() {
+  return {
+    fallback: false, //to indicate all paths are defined
+    paths: [
+      {
+        params: {
+          meetupId: "m1",
+        },
+      },
+      {
+        params: {
+          meetupId: "m2",
+        },
+      },
+    ],
+  };
+}
+
 export async function getStaticProps(context) {
   //fetch for single meetup
-  const meetupId = context.params.meetupId
-  console.log(meetupId)
+  const meetupId = context.params.meetupId;
+  console.log(meetupId);
   return {
     props: {
       meetupData: {
