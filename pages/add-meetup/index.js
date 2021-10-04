@@ -1,9 +1,10 @@
 import { useRouter } from "next/router";
 import NewMeetupForm from "../../components/meetups/NewMeetupForm";
+import Head from "next/head";
 
 //somedomain.com/add-meetup
 function AddMeetup() {
-  const router = useRouter()
+  const router = useRouter();
 
   async function AddMeetupHandler(enteredData) {
     console.log(enteredData);
@@ -16,12 +17,16 @@ function AddMeetup() {
     });
     const data = await response.json();
 
-    alert(data)
-    router.push('/')
+    alert(data);
+    router.push("/");
   }
 
   return (
     <div>
+      <Head>
+        <title>Add Meetup</title>
+        <meta name="description" content="Browse everything cool and also add " />
+      </Head>
       <NewMeetupForm onAddMeetup={AddMeetupHandler} />
     </div>
   );
